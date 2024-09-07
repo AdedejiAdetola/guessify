@@ -1,0 +1,15 @@
+body {
+    margin: 0; /* Remove default margin */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    background-color: aqua; /* Background color */
+    text-align: center; /* Center text within the container */
+}
+
+h3{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight:1000;
+    font-size: 40px;
+}

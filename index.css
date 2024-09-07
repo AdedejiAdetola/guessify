@@ -1,0 +1,32 @@
+body {
+    margin: 0; /* Remove default margin */
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    background-color: aqua; /* Background color */
+    text-align: center; /* Center text within the container */
+}
+
+h1{
+    font-family: "Nerko One", cursive;
+    font-size: 40px;
+}
+
+p{
+    font-family: "SUSE", cursive;
+    font-size: 20px;
+    font-weight: bolder;
+}
+
+.box01 {
+    color: aquamarine;
+    box-shadow: 2px 2px 5px 0px black;
+    padding: 20px;
+    border: 2px solid black; /* Optional: Add a border */
+}
+
+.submit-btn {
+    margin-top: 10px; /* Add some space between elements if needed */
+    text-align: center;
+}
