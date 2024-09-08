@@ -1,0 +1,62 @@
+.body {
+  margin: 0; /* Remove default margin */
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  background-color: aqua; /* Background color */
+  text-align: center; /* Center text within the container */
+}
+
+.h1 {
+  font-family: "Nerko One", cursive;
+  font-size: 40px;
+}
+
+.p1 {
+  font-family: "SUSE", cursive;
+  font-size: 20px;
+  font-weight: bolder;
+  margin-bottom: 30px;
+}
+
+.box01 {
+  color: aquamarine;
+  box-shadow: 2px 2px 5px 0px black;
+  padding: 20px;
+  border: 2px solid black; /* Optional: Add a border */
+}
+
+.username {
+  outline: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.submitBtn {
+  margin-top: 10px;
+  padding: 10px 20px; /* Add padding for better button size */
+  font-size: 18px; /* Increase font size */
+  font-family: "SUSE", cursive; /* Match the style with other elements */
+  color: white; /* Set text color */
+  background: linear-gradient(
+    45deg,
+    #ff7e5f,
+    #feb47b
+  ); /* Add a gradient background */
+  border: none; /* Remove default border */
+  border-radius: 8px; /* Round the corners */
+  cursor: pointer; /* Change cursor on hover */
+  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for effects */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px); /* Slight lift effect on hover */
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+}
+
+.submitBtn:active {
+  transform: translateY(1px); /* Press-down effect on click */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on active */
+}
