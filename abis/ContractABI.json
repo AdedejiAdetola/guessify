@@ -1,8 +1,14 @@
 [
   {
     "inputs": [],
-    "name": "init",
-    "outputs": [],
+    "name": "new",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -33,14 +39,33 @@
         "type": "string"
       }
     ],
-    "name": "play",
-    "outputs": [],
+    "name": "guessLetter",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "getScore",
+    "name": "isWordComplete",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getGuessedWord",
     "outputs": [
       {
         "internalType": "string",
@@ -53,14 +78,20 @@
   },
   {
     "inputs": [],
-    "name": "getWordLen",
-    "outputs": [],
+    "name": "getWinnerName",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "getHint",
+    "name": "getScores",
     "outputs": [
       {
         "internalType": "string",

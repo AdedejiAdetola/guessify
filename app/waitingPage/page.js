@@ -1,9 +1,7 @@
-// // waitingPage.js
 // "use client";
 // import { useEffect } from "react";
 // import { useRouter } from "next/navigation";
 // import styles from "./waitingPage.module.css";
-// // import web3 from "@/services/web3service"; // Import Web3.js service
 
 // const WaitingPage = () => {
 //   const router = useRouter();
@@ -11,14 +9,14 @@
 //   useEffect(() => {
 //     const checkRoomStatus = async () => {
 //       try {
-//         // Initialize contract interaction
+//         // Initialize contract interaction from the refactored service
 //         const contract = await import("@/services/contractService").then(
 //           (module) => module.default
 //         );
 
-//         // Simulate API call to smart contract
-//         const response = await contract.methods.checkRoomStatus().call();
-//         // Assuming checkRoomStatus returns an object with status
+//         // Call the smart contract function to check the room status
+//         const response = await contract.checkRoomStatus();
+
 //         if (response.status === "full") {
 //           router.push("/gamePage");
 //         }
@@ -58,6 +56,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import contract from "@/services/contractService"; // Importing contract from services
 import styles from "./waitingPage.module.css";
 
 const WaitingPage = () => {
@@ -66,15 +65,10 @@ const WaitingPage = () => {
   useEffect(() => {
     const checkRoomStatus = async () => {
       try {
-        // Initialize contract interaction from the refactored service
-        const contract = await import("@/services/contractService").then(
-          (module) => module.default
-        );
+        // Call the smart contract function to check if the word is complete
+        const isWordComplete = await contract.isWordComplete();
 
-        // Call the smart contract function to check the room status
-        const response = await contract.checkRoomStatus();
-
-        if (response.status === "full") {
+        if (isWordComplete) {
           router.push("/gamePage");
         }
       } catch (error) {

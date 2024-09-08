@@ -2,16 +2,18 @@
 // "use client";
 // import { useState, useEffect } from "react";
 // import styles from "./gamePage.module.css";
-// // import web3 from "@/services/web3service"; // Import Web3.js service
+// import { ethers } from "ethers";
+// import contractABI from "../../abis/ContractABI.json"; // Replace with the correct path to your contract ABI JSON
 
-// const words = ["KALEIDOSCOPE"]; // Default word (remove this once connected to smart contract)
 // const players = ["Player 1", "Player 2", "Player 3"]; // List of players
 
 // const Page = () => {
-//   const [selectedWord, setSelectedWord] = useState(words[0]);
+//   const [selectedWord, setSelectedWord] = useState(
+//     "ANTIDISESTABLISHMENTARIANISM"
+//   ); // Default word state
 //   const [currentWord, setCurrentWord] = useState({
-//     word: selectedWord,
-//     display: Array(selectedWord.length).fill(""),
+//     word: "",
+//     display: [],
 //     correctGuesses: [],
 //     wrongGuesses: [],
 //   });
@@ -24,35 +26,66 @@
 //   });
 //   const [currentPlayer, setCurrentPlayer] = useState(players[0]);
 //   const [winner, setWinner] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState("");
+
+//   // Replace with your smart contract address
+//   const contractAddress = "0xYourSmartContractAddress";
 
 //   useEffect(() => {
 //     const fetchWordFromSmartContract = async () => {
+//       setLoading(true);
+//       setError("");
 //       try {
-//         const contract = await import("@/services/contractService").then(
-//           (module) => module.default
+//         // Connect to Ethereum provider (e.g., MetaMask)
+//         const provider = new ethers.providers.Web3Provider(window.ethereum);
+//         const signer = provider.getSigner();
+//         const contract = new ethers.Contract(
+//           contractAddress,
+//           contractABI,
+//           signer
 //         );
-//         const response = await contract.methods.getWord().call(); // Replace 'getWord' with your contract method
-//         setSelectedWord(response.word);
+
+//         // Fetch the word from the smart contract
+//         const response = await contract.getWord(); // Replace 'getWord' with the correct contract method
+//         setSelectedWord(response);
+
+//         // Initialize the current word state based on the fetched word
 //         setCurrentWord({
-//           word: response.word,
-//           display: Array(response.word.length).fill(""),
+//           word: response,
+//           display: Array(response.length).fill(""),
 //           correctGuesses: [],
 //           wrongGuesses: [],
 //         });
 //       } catch (error) {
 //         console.error("Error fetching word from smart contract:", error);
+//         setError("Failed to fetch the word from the smart contract.");
+//       } finally {
+//         setLoading(false);
 //       }
 //     };
 
 //     fetchWordFromSmartContract();
 //   }, []);
 
-//   const handleLetterGuess = async (e) => {
+//   // Update currentWord when selectedWord changes
+//   useEffect(() => {
+//     if (selectedWord) {
+//       setCurrentWord({
+//         word: selectedWord,
+//         display: Array(selectedWord.length).fill(""),
+//         correctGuesses: [],
+//         wrongGuesses: [],
+//       });
+//     }
+//   }, [selectedWord]);
+
+//   const handleLetterGuess = (e) => {
 //     e.preventDefault();
 //     const letter = guess.toUpperCase();
-//     if (letter.length !== 1 || !/^[A-Z]$/i.test(letter)) return;
+//     if (letter.length !== 1 || !/^[A-Z]$/i.test(letter)) return; // Only accept single alphabetic characters
 
-//     if (allGuesses.includes(letter)) return;
+//     if (allGuesses.includes(letter)) return; // Prevent duplicate guesses
 
 //     let pointsEarned = 0;
 //     let isGuessCorrect = false;
@@ -85,6 +118,7 @@
 //           ? [...prev.wrongGuesses, letter]
 //           : prev.wrongGuesses,
 //     }));
+
 //     setAllGuesses([...allGuesses, letter]);
 //     setGuess("");
 
@@ -103,6 +137,9 @@
 //   return (
 //     <div className={styles.container}>
 //       <h1 className={styles.title}>Hangman Game</h1>
+
+//       {loading && <p>Loading word from blockchain...</p>}
+//       {error && <p className={styles.error}>{error}</p>}
 
 //       {winner ? (
 //         <div className={styles.winnerAnnouncement}>
@@ -194,17 +231,19 @@
 
 // export default Page;
 
-// gamePage.js
 "use client";
 import { useState, useEffect } from "react";
-import styles from "./gamePage.module.css";
 import { ethers } from "ethers";
-import contractABI from "../../abis/ContractABI.json"; // Replace with the correct path to your contract ABI JSON
+import contractABI from "../../abis/ContractABI.json"; // Path to your ABI
+import styles from "./gamePage.module.css";
+import contract from "@/services/contractService"; // Importing contract from services
 
 const players = ["Player 1", "Player 2", "Player 3"]; // List of players
 
 const Page = () => {
-  const [selectedWord, setSelectedWord] = useState(""); // Default word state
+  const [selectedWord, setSelectedWord] = useState(
+    "ANTIDISESTABLISHMENTARIANISM"
+  );
   const [currentWord, setCurrentWord] = useState({
     word: "",
     display: [],
@@ -223,31 +262,19 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Replace with your smart contract address
-  const contractAddress = "0xYourSmartContractAddress";
-
   useEffect(() => {
     const fetchWordFromSmartContract = async () => {
       setLoading(true);
       setError("");
       try {
-        // Connect to Ethereum provider (e.g., MetaMask)
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          contractAddress,
-          contractABI,
-          signer
-        );
-
         // Fetch the word from the smart contract
-        const response = await contract.getWord(); // Replace 'getWord' with the correct contract method
-        setSelectedWord(response);
+        const word = await contract.getGuessedWord();
+        setSelectedWord(word);
 
         // Initialize the current word state based on the fetched word
         setCurrentWord({
-          word: response,
-          display: Array(response.length).fill(""),
+          word: word,
+          display: Array(word.length).fill(""),
           correctGuesses: [],
           wrongGuesses: [],
         });
@@ -262,7 +289,6 @@ const Page = () => {
     fetchWordFromSmartContract();
   }, []);
 
-  // Update currentWord when selectedWord changes
   useEffect(() => {
     if (selectedWord) {
       setCurrentWord({
@@ -274,7 +300,7 @@ const Page = () => {
     }
   }, [selectedWord]);
 
-  const handleLetterGuess = (e) => {
+  const handleLetterGuess = async (e) => {
     e.preventDefault();
     const letter = guess.toUpperCase();
     if (letter.length !== 1 || !/^[A-Z]$/i.test(letter)) return; // Only accept single alphabetic characters
@@ -321,10 +347,8 @@ const Page = () => {
     setCurrentPlayer(players[nextIndex]);
 
     if (updatedDisplay.join("") === selectedWord) {
-      const topPlayer = Object.keys(playerScores).reduce((a, b) =>
-        playerScores[a] > playerScores[b] ? a : b
-      );
-      setWinner(topPlayer);
+      const winnerName = await contract.getWinnerName();
+      setWinner(winnerName);
     }
   };
 

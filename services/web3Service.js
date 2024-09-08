@@ -96,7 +96,7 @@ const providerUrl =
 const provider = new ethers.providers.JsonRpcProvider(providerUrl);
 
 // Contract configuration
-const contractAddress = "0xf3ea6ef7a3f620205bd2ad7494c88b0d0b47a5de";
+const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96";
 const contract = new ethers.Contract(contractAddress, ContractABI, provider);
 
 // Retrieve private key from environment
