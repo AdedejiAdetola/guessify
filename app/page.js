@@ -1,9 +1,9 @@
 // Home.js
 "use client";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { sendTransaction } from "../services/web3Service";
 import styles from "./app.module.css";
-import web3 from "../services/web3Service"; // Import Web3.js service
 
 export default function Home() {
   const router = useRouter();
@@ -11,21 +11,18 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
-      // Initialize contract interaction
-      const contract = await import("../services/contractService").then(
-        (module) => module.default
-      );
+      // Call the addPlayer method through sendTransaction
+      const receipt = await sendTransaction("addPlayer", playerName);
+      console.log("Transaction successful:", receipt);
 
-      // Simulate API call to smart contract
-      const response = await contract.methods.joinRoom(playerName).call();
-      // Assuming joinRoom returns an object with status
-      if (response.status === "full") {
-        router.push("/waitingPage");
+      // Handle navigation based on transaction receipt
+      if (receipt.status) {
+        router.push("/waitingPage"); // Use Next.js router for navigation
       } else {
-        router.push("/waitingPage");
+        console.error("Transaction failed:", receipt);
       }
     } catch (error) {
-      console.error("Error joining room:", error);
+      console.error("Error sending transaction:", error);
     }
   };
 
