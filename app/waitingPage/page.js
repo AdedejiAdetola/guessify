@@ -7,22 +7,22 @@ import styles from "./waitingPage.module.css";
 const WaitingPage = () => {
   const router = useRouter();
 
-  useEffect(() => {
-    const checkRoomStatus = async () => {
-      try {
-        // Call the smart contract function to check if the word is complete
-        const isWordComplete = await contract.isWordComplete();
+  // useEffect(() => {
+  //   const checkRoomStatus = async () => {
+  //     try {
+  //       // Call the smart contract function to check if the word is complete
+  //       const isWordComplete = await contract.isWordComplete();
 
-        if (isWordComplete) {
-          router.push("/gamePage");
-        }
-      } catch (error) {
-        console.error("Error checking room status:", error);
-      }
-    };
+  //       if (isWordComplete) {
+  //         router.push("/gamePage");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking room status:", error);
+  //     }
+  //   };
 
-    checkRoomStatus();
-  }, [router]);
+  //   checkRoomStatus();
+  // }, [router]);
 
   const handleSubmit = () => {
     router.push("/gamePage");

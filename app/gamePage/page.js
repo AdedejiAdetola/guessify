@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect } from "react";
-import { ethers } from "ethers";
-import contractABI from "../../utils/contract"; // Path to your ABI
+import initializeContract from "@/utils/contract"; // Import the contract initialization function
 import styles from "./gamePage.module.css";
-import contract from "@/services/contractService"; // Importing contract from services
 
 const players = ["Player 1", "Player 2", "Player 3"]; // List of players
 
 const Page = () => {
+  const [contract, setContract] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // State to track loading status
   const [selectedWord, setSelectedWord] = useState(
     "ANTIDISESTABLISHMENTARIANISM"
   );
@@ -26,96 +26,111 @@ const Page = () => {
   });
   const [currentPlayer, setCurrentPlayer] = useState(players[0]);
   const [winner, setWinner] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Initialize the contract when the component mounts
   useEffect(() => {
-    const fetchWordFromSmartContract = async () => {
-      setLoading(true);
-      setError("");
+    const initContract = async () => {
       try {
-        // Fetch the word from the smart contract
-        const word = await contract.getGuessedWord();
-        setSelectedWord(word);
+        setIsLoading(true); // Start loading
+        const { contract, signer } = await initializeContract(); // Initialize the contract
+        setContract(contract);
+        console.log("Contract initialized:", contract);
 
-        // Initialize the current word state based on the fetched word
-        setCurrentWord({
-          word: word,
-          display: Array(word.length).fill(""),
-          correctGuesses: [],
-          wrongGuesses: [],
-        });
+        // Example function call to check initial state or setup
+        const guessedWord = await contract.new(); // Ensure this matches the correct contract function
+        console.log(`New state Word: ${guessedWord}`);
       } catch (error) {
-        console.error("Error fetching word from smart contract:", error);
-        setError("Failed to fetch the word from the smart contract.");
+        console.error("Error initializing contract:", error);
+        setError("Failed to initialize the smart contract.");
       } finally {
-        setLoading(false);
+        setIsLoading(false); // End loading
       }
     };
 
-    fetchWordFromSmartContract();
+    initContract();
   }, []);
 
+  // Set up the current word state when the selected word changes
   useEffect(() => {
-    if (selectedWord) {
-      setCurrentWord({
-        word: selectedWord,
-        display: Array(selectedWord.length).fill(""),
-        correctGuesses: [],
-        wrongGuesses: [],
-      });
-    }
+    setCurrentWord({
+      word: selectedWord,
+      display: Array(selectedWord.length).fill(""),
+      correctGuesses: [],
+      wrongGuesses: [],
+    });
   }, [selectedWord]);
 
   const handleLetterGuess = async (e) => {
     e.preventDefault();
     const letter = guess.toUpperCase();
-    if (letter.length !== 1 || !/^[A-Z]$/i.test(letter)) return; // Only accept single alphabetic characters
 
+    // Validate the guess
+    if (letter.length !== 1 || !/^[A-Z]$/i.test(letter)) return; // Only accept single alphabetic characters
     if (allGuesses.includes(letter)) return; // Prevent duplicate guesses
 
-    let pointsEarned = 0;
-    let isGuessCorrect = false;
-    const updatedDisplay = [...currentWord.display];
-
-    selectedWord.split("").forEach((char, index) => {
-      if (char === letter) {
-        updatedDisplay[index] = letter;
-        isGuessCorrect = true;
-        pointsEarned += 1;
+    try {
+      if (!contract) {
+        alert(
+          "Contract is still initializing. Please try again in a few seconds."
+        );
+        return;
       }
-    });
 
-    setPlayerScores((prevScores) => ({
-      ...prevScores,
-      [currentPlayer]: isGuessCorrect
-        ? prevScores[currentPlayer] + pointsEarned
-        : prevScores[currentPlayer],
-    }));
+      // Make a guess using the smart contract
+      await contract.guessLetter(letter);
 
-    setCurrentWord((prev) => ({
-      ...prev,
-      display: updatedDisplay,
-      correctGuesses:
-        isGuessCorrect && !prev.correctGuesses.includes(letter)
-          ? [...prev.correctGuesses, letter]
-          : prev.correctGuesses,
-      wrongGuesses:
-        !isGuessCorrect && !prev.wrongGuesses.includes(letter)
-          ? [...prev.wrongGuesses, letter]
-          : prev.wrongGuesses,
-    }));
+      // Update the display and scores locally
+      let pointsEarned = 0;
+      let isGuessCorrect = false;
+      const updatedDisplay = [...currentWord.display];
 
-    setAllGuesses([...allGuesses, letter]);
-    setGuess("");
+      selectedWord.split("").forEach((char, index) => {
+        if (char === letter) {
+          updatedDisplay[index] = letter;
+          isGuessCorrect = true;
+          pointsEarned += 1;
+        }
+      });
 
-    const currentIndex = players.indexOf(currentPlayer);
-    const nextIndex = (currentIndex + 1) % players.length;
-    setCurrentPlayer(players[nextIndex]);
+      setPlayerScores((prevScores) => ({
+        ...prevScores,
+        [currentPlayer]: isGuessCorrect
+          ? prevScores[currentPlayer] + pointsEarned
+          : prevScores[currentPlayer],
+      }));
 
-    if (updatedDisplay.join("") === selectedWord) {
-      const winnerName = await contract.getWinnerName();
-      setWinner(winnerName);
+      setCurrentWord((prev) => ({
+        ...prev,
+        display: updatedDisplay,
+        correctGuesses:
+          isGuessCorrect && !prev.correctGuesses.includes(letter)
+            ? [...prev.correctGuesses, letter]
+            : prev.correctGuesses,
+        wrongGuesses:
+          !isGuessCorrect && !prev.wrongGuesses.includes(letter)
+            ? [...prev.wrongGuesses, letter]
+            : prev.wrongGuesses,
+      }));
+
+      setAllGuesses([...allGuesses, letter]);
+      setGuess("");
+
+      // Switch to the next player
+      const currentIndex = players.indexOf(currentPlayer);
+      const nextIndex = (currentIndex + 1) % players.length;
+      setCurrentPlayer(players[nextIndex]);
+
+      // Check if the word is complete from the frontend
+      const isComplete = !updatedDisplay.includes(""); // If no empty spaces are left
+
+      if (isComplete) {
+        // Determine the winner from the frontend
+        setWinner(currentPlayer);
+      }
+    } catch (error) {
+      console.error("Error making guess:", error);
+      setError("Failed to make a guess.");
     }
   };
 
@@ -123,10 +138,11 @@ const Page = () => {
     <div className={styles.container}>
       <h1 className={styles.title}>Hangman Game</h1>
 
-      {loading && <p>Loading word from blockchain...</p>}
-      {error && <p className={styles.error}>{error}</p>}
-
-      {winner ? (
+      {isLoading ? (
+        <p className={styles.loading}>Initializing contract, please wait...</p>
+      ) : error ? (
+        <p className={styles.error}>{error}</p>
+      ) : winner ? (
         <div className={styles.winnerAnnouncement}>
           <h2>Congratulations!</h2>
           <p>{winner} is the winner!</p>
