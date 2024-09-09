@@ -11,7 +11,7 @@
 
 // services/contractService.js
 import { ethers } from "ethers";
-import ContractABI from "../abis/ContractABI.json";
+import ContractABI from "../utils/ContractABI.json";
 
 const providerUrl =
   "https://arbitrum-mainnet.infura.io/v3/f8eab5461bb1483387beb63dc0751ed2";

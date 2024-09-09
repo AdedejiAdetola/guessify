@@ -88,7 +88,7 @@
 
 // services/ethersService.js
 import { ethers } from "ethers";
-import ContractABI from "../abis/ContractABI.json"; // ABI should match your deployed contract
+import ContractABI from "../utils/ContractABI.json"; // ABI should match your deployed contract
 
 // Provider setup: Infura endpoint
 const providerUrl =
