@@ -1,159 +1,84 @@
-// import Web3 from "web3";
-// import { Contract } from "web3-eth-contract";
-// import ContractABI from "../abis/ContractABI.json";
-
-// // Initialize Web3 provider
-// const providerUrl =
-//   "https://arbitrum-mainnet.infura.io/v3/f8eab5461bb1483387beb63dc0751ed2";
-// const provider = new Web3.providers.HttpProvider(providerUrl);
-// const web3 = new Web3(provider);
-
-// // Contract details
-// const contractAddress = "0xf3ea6ef7a3f620205bd2ad7494c88b0d0b47a5de";
-// const contract = new web3.eth.Contract(ContractABI, contractAddress);
-
-// const sendTransaction = async (method, ...args) => {
-//   const privateKey =
-//     process.env.PRIVATE_KEY ||
-//     "d4b32b5b4ce79beaf2f8935c7b00f48254e8e9b56fa96f7730e69ea8497a5d33";
-
-//   if (!privateKey) {
-//     throw new Error("Private Key not found.");
-//   }
-
-//   if (privateKey.length !== 64) {
-//     throw new Error("Invalid private key format.");
-//   }
-
-//   const formattedPrivateKey = `0x${privateKey}`;
-//   const account = web3.eth.accounts.privateKeyToAccount(formattedPrivateKey);
-//   web3.eth.accounts.wallet.add(account);
-
-//   const data = contract.methods[method](...args).encodeABI();
-
-//   // Estimate gas for the transaction
-//   const gasEstimate = await contract.methods[method](...args).estimateGas({
-//     from: account.address,
-//   });
-
-//   // Fetch current gas price
-//   const gasPrice = await web3.eth.getGasPrice();
-
-//   // Transaction configuration
-//   const tx = {
-//     from: account.address,
-//     to: contractAddress,
-//     data: data,
-//     gas: gasEstimate,
-//     gasPrice, // Use this for legacy transactions
-//   };
-
-//   try {
-//     // Sign and send the transaction
-//     const signedTx = await web3.eth.accounts.signTransaction(
-//       tx,
-//       formattedPrivateKey
-//     );
-//     const receipt = await web3.eth.sendSignedTransaction(
-//       signedTx.rawTransaction
-//     );
-//     console.log("Transaction successful:", receipt);
-//     return receipt;
-//   } catch (error) {
-//     if (error.message.includes("revert")) {
-//       console.error(
-//         "Transaction reverted by the EVM. Possible reasons: contract logic, invalid parameters, insufficient gas."
-//       );
-//     } else {
-//       console.error("Transaction Error:", error);
-//     }
-//     throw error;
-//   }
-// };
-
-// // Example usage: Calling the `init` function of your contract
-// const initContract = async () => {
-//   try {
-//     const receipt = await sendTransaction("init"); // Replace "init" with your function name
-//     console.log("Init function executed successfully:", receipt);
-//   } catch (error) {
-//     console.error("Error executing init function:", error);
-//   }
-// };
-
-// export { web3, contract, sendTransaction, initContract };
-
-// // Call the initContract function when needed
-// initContract();
-
-// services/ethersService.js
 import { ethers } from "ethers";
-import ContractABI from "../utils/ContractABI.json"; // ABI should match your deployed contract
-
-// Provider setup: Infura endpoint
-const providerUrl =
-  "https://arbitrum-mainnet.infura.io/v3/f8eab5461bb1483387beb63dc0751ed2";
-const provider = new ethers.providers.JsonRpcProvider(providerUrl);
+import { Contract } from "ethers";
+import abi from "../utils/ContractABI.json"; // ABI should match your deployed contract
 
 // Contract configuration
-const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96";
-const contract = new ethers.Contract(contractAddress, ContractABI, provider);
+const contractAddress = "0xc3f58c2f51c802fa8ff7871dbce8e7231ec75bda";
 
-// Retrieve private key from environment
-const privateKey =
-  process.env.PRIVATE_KEY ||
-  "d4b32b5b4ce79beaf2f8935c7b00f48254e8e9b56fa96f7730e69ea8497a5d33";
+async function initializeContract() {
+  try {
+    // Check if MetaMask is installed
+    if (!window.ethereum) {
+      throw new Error("No crypto wallet found. Please install MetaMask.");
+    }
 
-// Check for the validity of the private key
-if (!privateKey || privateKey.length !== 64) {
-  throw new Error("Invalid or missing private key.");
+    // Create a provider from MetaMask
+    const provider = new ethers.BrowserProvider(window.ethereum);
+
+    // Handle the case where the request is already pending
+    let signer;
+    try {
+      signer = await provider.getSigner();
+    } catch (error) {
+      if (error.code === -32002) {
+        console.error(
+          "MetaMask request is already pending. Please wait for the previous request to complete."
+        );
+        return;
+      }
+      throw error; // rethrow if it's another error
+    }
+
+    const contract = new Contract(contractAddress, abi, signer);
+    return contract;
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
 }
 
-// Signer setup
-const wallet = new ethers.Wallet(`0x${privateKey}`, provider);
+// Export the contract and signer from the async function
+export default initializeContract;
 
-// Function to send transactions
-const sendTransaction = async (method, ...args) => {
-  try {
-    // Prepare transaction data
-    const txData = await contract.populateTransaction[method](...args);
+// request the contract
+// contract.fuction(value);
 
-    // Estimate gas
-    const gasEstimate = await provider.estimateGas({
-      ...txData,
-      from: wallet.address,
-    });
+// use case example;
+// want to send user name to the contract
+// first
+// get contract state after importing to your page
+// import initializeContract from './utils/contract'
+// const contract = await initializeContract();
+// secound
+// await the request using contract.function(value);
+// e.g
+// const newq = await contract.addPlayer("new player");
+// console.log(newq); //this is a set request the return will be a confirmation object
+// e.g view functrion
+//
+// const getScores = await contract.getScores();
+// console.log(Guessed Word: ${getScores});
 
-    // Set transaction parameters
-    const tx = {
-      ...txData,
-      gasLimit: gasEstimate,
-    };
+// example
+// (async () => {
+// try {
+//     const contract = await initializeContract();
 
-    // Send the transaction using the wallet
-    const response = await wallet.sendTransaction(tx);
-    const receipt = await response.wait();
+//     // // Call the new() function, which may initialize a new game
 
-    console.log("Transaction successful:", receipt);
-    return receipt;
-  } catch (error) {
-    console.error("Transaction Error:", error);
-    throw error;
-  }
-};
+//     const newq = await contract.new();
+//     console.log(newq);
 
-// Example function for contract initialization
-const initContract = async () => {
-  try {
-    const receipt = await sendTransaction("init");
-    console.log("Init function executed successfully:", receipt);
-  } catch (error) {
-    console.error("Error executing init function:", error);
-  }
-};
+//     //  / Call addPlayer to add a player to the game
+//     const addPlayerTx = await contract.addPlayer("orange");
+//     await addPlayerTx.wait();  // Wait for the transaction to be mined
+//     console.log(addPlayerTx)
+//     console.log(Player added with result: ${addPlayerTx});
 
-// Export for use in other parts of the application
-export { contract, wallet, sendTransaction, initContract };
+//     // // Now retrieve the guessed word (assuming it's a view function, no need for .wait())
+//     const getScores = await contract.getScores();
+//     console.log(Guessed Word: ${getScores});
 
-// Call the initContract function where needed
-// initContract(); // Uncomment when you need to use it
+//   } catch (error) {
+//     console.error('Error: this is a problem', error);
+//   }
+// })();

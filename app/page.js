@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import initializeContract from "../utils/contract";
-import { sendTransaction } from "../services/web3Service"; // Ensure the import path is correct
 import styles from "./app.module.css";
 
 export default function Home() {
@@ -38,6 +37,7 @@ export default function Home() {
   }, []);
 
   const handleSubmit = async () => {
+    console.log("playerName", playerName);
     if (!contract) {
       console.error("Contract not initialized yet");
       alert(
@@ -47,10 +47,12 @@ export default function Home() {
     }
 
     try {
-      const receipt = await sendTransaction("addPlayer", playerName); // Ensure "addPlayer" matches your contract method
+      // const receipt = await sendTransaction("addPlayer", playerName); // Ensure "addPlayer" matches your contract method
+
+      const receipt = await contract.addPlayer(playerName);
       console.log("Transaction successful:", receipt);
 
-      if (receipt.status) {
+      if (receipt) {
         router.push("/waitingPage");
       } else {
         console.error("Transaction failed:", receipt);
