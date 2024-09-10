@@ -4,7 +4,7 @@ import initializeContract from "@/utils/contract"; // Import the contract initia
 import styles from "./mainPage.module.css";
 
 const page = () => {
-  const [name, setName] = useState("");
+  // const [name, setName] = useState("");
   const [wordToGuess, setWordToGuess] = useState("______");
   const [hint, setHint] = useState("Hint will be displayed here...");
   const [letter, setLetter] = useState("");
@@ -87,22 +87,22 @@ const page = () => {
     }
   };
 
-  const handleStartGame = async () => {
-    setLoading(true);
-    try {
-      const receipt = await contract.addPlayer(name);
-      //   await updateGameState(contract);
-      if (receipt) {
-        router.push("/mainPage");
-      } else {
-        console.error("Transaction failed:", receipt);
-      }
-    } catch (error) {
-      console.error("Error starting the game:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleStartGame = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const receipt = await contract.addPlayer(name);
+  //     //   await updateGameState(contract);
+  //     if (receipt) {
+  //       router.push("/mainPage");
+  //     } else {
+  //       console.error("Transaction failed:", receipt);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error starting the game:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleSubmitLetter = async () => {
     if (!letter.trim()) return; // Prevent empty submissions
