@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import initializeContract from "@/utils/contract"; // Import the contract initialization function
 import styles from "./mainPage.module.css";
 
-const page = () => {
+const Page = () => {
   // const [name, setName] = useState("");
   const [wordToGuess, setWordToGuess] = useState("______");
   const [hint, setHint] = useState("Hint will be displayed here...");
@@ -252,4 +252,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
