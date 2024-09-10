@@ -5,6 +5,7 @@ import styles from "./mainPage.module.css";
 
 const Page = () => {
   // const [name, setName] = useState("");
+  const [name, setName] = useState("");
   const [wordToGuess, setWordToGuess] = useState("______");
   const [hint, setHint] = useState("Hint will be displayed here...");
   const [letter, setLetter] = useState("");
