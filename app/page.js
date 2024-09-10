@@ -72,6 +72,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className={styles.blurBackground}></div>
 
       <nav className={styles.navbar}>
         <div className={styles.logo}>Guessify</div>

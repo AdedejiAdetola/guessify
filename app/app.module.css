@@ -21,6 +21,7 @@
   position: fixed;
   top: 0;
   position: absolute;
+  /* border: 2px solid red; */
 }
 
 .navbar .logo {
@@ -46,15 +47,13 @@
 
 .content {
   display: flex;
-  margin-top: 100px;
   height: 100%;
   width: 100%;
   position: relative;
-  /* justify-content: center; */
   background-position: left;
 }
 
-.intro-left {
+.introLeft {
   width: 50%;
   height: 100%;
   padding: 80px;
@@ -65,12 +64,12 @@
   justify-content: center;
 }
 
-.intro-left h1 {
+.introLeft h1 {
   font-size: 48px;
   margin-bottom: 20px;
 }
 
-.intro-left p {
+.introLeft p {
   font-size: 18px;
   line-height: 1.6;
   margin-bottom: 30px;
@@ -105,8 +104,8 @@
   color: #fc4442;
 }
 
-.blur-background {
-  width: 53%;
+.blurBackground {
+  width: 45%;
   height: 100%;
   background-size: cover;
   background-position: right;
@@ -114,6 +113,7 @@
   opacity: 1;
   position: absolute;
   right: 0;
+  /* top: 0; */
   background-color: #bcbbb0;
   background-image: url("./Images/guessify.jpg");
   /* background-size: contai; or 'cover' */
