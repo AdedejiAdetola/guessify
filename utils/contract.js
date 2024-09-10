@@ -1,42 +1,7 @@
-// import { ethers } from "ethers";
-// import { Contract } from "ethers";
-// import abi from "./ContractABI.json";
-
-// // Contract address
-// const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96";
-
-// // Function to initialize provider and contract
-// async function initializeContract() {
-//   let provider;
-//   let signer;
-
-//   // Ensure window.ethereum is available
-//   if (!window.ethereum) {
-//     throw new Error("No crypto wallet found. Please install MetaMask.");
-//   }
-
-//   // Setup provider and signer
-//   if (window.ethereum) {
-//     provider = new ethers.BrowserProvider(window.ethereum);
-//     signer = await provider.getSigner();
-//   } else {
-//     console.log("MetaMask not installed; using read-only defaults");
-//     provider = ethers.getDefaultProvider();
-//   }
-
-//   // Create the contract instance
-//   const contract = new Contract(contractAddress, abi, signer);
-
-//   return { contract, signer };
-// }
-
-// // Export the contract and signer from the async function
-// export default initializeContract;
-
 // Ensure you have ethers v5 installed: npm install ethers@5
 import { ethers } from "ethers";
 import ContractABI from "./ContractABI.json"; // Ensure the casing matches your file system
-const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96"; // Replace with your actual contract address
+const contractAddress = "0x470ef9cb90f38a2a70e59271b89e42f85e222338"; // Replace with your actual contract address
 
 export default async function initializeContract() {
   try {

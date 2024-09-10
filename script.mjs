@@ -23,7 +23,10 @@ async function fetchWithRetry(url, options = {}, retries = 3, backoff = 3000) {
 
 async function main() {
   const etherscanApiKey = "8CJC6RZKNGJI3YB9U36F2HYPP2VT4MUYWP";
-  const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96"; // Replace with your actual contract address
+  // const contractAddress = "0xe4D57693384bBF00B045D58D0aff65C3925cBB96"; // Replace with your actual contract address
+
+  const contractAddress = "0x470ef9cb90f38a2a70e59271b89e42f85e222338";
+
   const privateKey =
     "8e703c358b3b7a6010e7de0749b43adca6fe77959f9d2d278c47974b8c98979a";
   const nodeUrl = "https://sepolia-rollup.arbitrum.io/rpc";

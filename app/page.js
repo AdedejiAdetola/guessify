@@ -1,88 +1,84 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import initializeContract from "../utils/contract";
+import initializeContract from "@/utils/contract";
 import styles from "./app.module.css";
 
 export default function Home() {
   const router = useRouter();
-  const [playerName, setPlayerName] = useState("");
+  const [name, setName] = useState("");
   const [contract, setContract] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // State to track loading status
+  const [loading, setLoading] = useState(false);
 
-  // Initialize the contract when the component mounts
+  // Fetch contract and initial data on component mount
   useEffect(() => {
-    const initContract = async () => {
+    const fetchContract = async () => {
+      setLoading(true);
       try {
-        setIsLoading(true); // Start loading
-        const { contract, signer_ } = await initializeContract();
-        setContract(contract);
+        const { contract, signer } = await initializeContract();
         console.log("con", contract);
-
-        // Example function calls
-        const guessedWord = await contract.new(); // Ensure this method name is correct as per your contract
-        console.log(`New state Word: ${guessedWord}`);
-
-        // Uncomment and adjust as needed
-        // const isWordComplete = await contract.isWordComplete();
-        // console.log(`Is Word Complete: ${isWordComplete}`);
+        setContract(contract);
       } catch (error) {
         console.error("Error initializing contract:", error);
       } finally {
-        setIsLoading(false); // End loading
+        setLoading(false);
       }
     };
 
-    initContract();
+    fetchContract();
   }, []);
 
-  const handleSubmit = async () => {
-    console.log("playerName", playerName);
-    if (!contract) {
-      console.error("Contract not initialized yet");
-      alert(
-        "Contract is still initializing. Please try again in a few seconds."
-      );
-      return;
-    }
-
+  const handleStartGame = async (e) => {
+    e.preventDefault(); // Prevents the form from submitting normally
+    setLoading(true);
     try {
-      // const receipt = await sendTransaction("addPlayer", playerName); // Ensure "addPlayer" matches your contract method
-
-      const receipt = await contract.addPlayer(playerName);
-      console.log("Transaction successful:", receipt);
-
+      const receipt = await contract.addPlayer(name);
+      console.log("rec", receipt);
+      //   await updateGameState(contract);
       if (receipt) {
-        router.push("/waitingPage");
+        router.push("/mainPage");
       } else {
         console.error("Transaction failed:", receipt);
       }
     } catch (error) {
-      console.error("Error sending transaction:", error);
+      console.error("Error starting the game:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className={styles.body}>
-      <div className={styles.box1}>
-        <h1 className={styles.h1}>Welcome Gamer!!!</h1>
-        <p className={styles.p1}>Input your player name</p>
-        {isLoading ? (
-          <p className={styles.p1}>Initializing contract, please wait...</p>
-        ) : (
-          <div>
-            <input
-              type="text"
-              className={styles.username}
-              value={playerName}
-              onChange={(e) => setPlayerName(e.target.value)}
-            />
-            <button className={styles.submitBtn} onClick={handleSubmit}>
-              Enter Game
-            </button>
+      <div className={styles.content}>
+        <div className={styles.introLeft}>
+          <div className={styles.card}>
+            <span className={styles.card__title}>W * * * C O M *</span>
+            <p className={styles.card__content}>
+              Enter game and Guess the Next letter?.
+            </p>
+            <form className={styles.card__form} onSubmit={handleStartGame}>
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className={styles.inputSmall}
+              />
+              <button className={styles.card__button} type="submit">
+                Submit
+              </button>
+            </form>
+            {loading && <div>Loading...</div>}
           </div>
-        )}
+        </div>
       </div>
+
+      <nav className={styles.navbar}>
+        <div className={styles.logo}>Guessify</div>
+        <button className={styles.button54} role="button">
+          Login
+        </button>
+      </nav>
     </div>
   );
 }

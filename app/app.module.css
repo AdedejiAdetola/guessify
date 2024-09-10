@@ -1,62 +1,302 @@
 .body {
-  margin: 0; /* Remove default margin */
-  height: 100vh; /* Full viewport height */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+
+  background-color: #3e333f;
+  height: 100vh;
   display: flex;
-  align-items: center; /* Center items vertically */
-  justify-content: center; /* Center items horizontally */
-  background-color: aqua; /* Background color */
-  text-align: center; /* Center text within the container */
+  flex-direction: column;
 }
 
-.h1 {
-  font-family: "Nerko One", cursive;
-  font-size: 40px;
+.navbar {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background-color: transparent;
+  position: fixed;
+  top: 0;
+  position: absolute;
 }
 
-.p1 {
-  font-family: "SUSE", cursive;
-  font-size: 20px;
-  font-weight: bolder;
+.navbar .logo {
+  color: #f0e19e;
+  font-size: 30px;
+  font-weight: bold;
+  font-family: Verdana;
+}
+
+.login-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #0056b3;
+}
+
+.content {
+  display: flex;
+  margin-top: 100px;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  /* justify-content: center; */
+  background-position: left;
+}
+
+.intro-left {
+  width: 50%;
+  height: 100%;
+  padding: 80px;
+  background-color: #3e333f;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.intro-left h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.intro-left p {
+  font-size: 18px;
+  line-height: 1.6;
   margin-bottom: 30px;
 }
 
-.box01 {
-  color: aquamarine;
-  box-shadow: 2px 2px 5px 0px black;
+.input-section {
+  display: flex;
+  gap: 15px;
+}
+
+.name-input {
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 3px;
+  width: 250px;
+}
+
+.cta-button {
+  padding: 12px 30px;
+  background-color: #fc4442;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: white;
+  color: #fc4442;
+}
+
+.blur-background {
+  width: 53%;
+  height: 100%;
+  background-size: cover;
+  background-position: right;
+  filter: blur(0px);
+  opacity: 1;
+  position: absolute;
+  right: 0;
+  background-color: #bcbbb0;
+  background-image: url("./Images/guessify.jpg");
+  /* background-size: contai; or 'cover' */
+  background-repeat: no-repeat;
+  background-position: right;
+}
+
+/* CSS */
+.button54 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #000;
+  cursor: pointer;
+  border: 3px solid;
+  padding: 0.25em 0.5em;
+  box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px,
+    5px 5px 0px 0px;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button54:active {
+  box-shadow: 0px 0px 0px 0px;
+  top: 5px;
+  left: 5px;
+}
+
+@media (min-width: 768px) {
+  .button-54 {
+    padding: 0.25em 0.75em;
+  }
+}
+
+.cust-11 {
+  font-size: 75px !important;
+  letter-spacing: 5px !important;
+  font-family: Inter, sans-serif !important;
+  font-weight: 700 !important;
+}
+.cust-12 {
+  border: 0px !important;
+  font-size: 16px !important;
+  width: 0.6rem;
+  line-height: 1.2 !important;
+  margin-bottom: 10px !important;
+  font-family: Sen, sans-serif;
+  font-weight: 300 !important;
+}
+
+.card {
+  width: 600px;
   padding: 20px;
-  border: 2px solid black; /* Optional: Add a border */
+  background: #fff;
+  border: 6px solid #000;
+  box-shadow: 12px 12px 0 #000;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.username {
-  outline: none;
-  border-radius: 5px;
+.card:hover {
+  transform: translate(-5px, -5px);
+  box-shadow: 17px 17px 0 #000;
+}
+
+.card__title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #000;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+.card__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 90%;
+  height: 3px;
+  background-color: #000;
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+
+.card:hover .card__title::after {
+  transform: translateX(0);
+}
+
+.card__content {
+  font-size: 16px;
+  line-height: 1.4;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.card__form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.card__form input {
   padding: 10px;
+  border: 3px solid #000;
+  font-size: 16px;
+  font-family: inherit;
+  transition: transform 0.3s;
+  width: calc(100% - 26px); /* Adjust for padding and border */
 }
 
-.submitBtn {
-  margin-top: 10px;
-  padding: 10px 20px; /* Add padding for better button size */
-  font-size: 18px; /* Increase font size */
-  font-family: "SUSE", cursive; /* Match the style with other elements */
-  color: white; /* Set text color */
-  background: linear-gradient(
-    45deg,
-    #ff7e5f,
-    #feb47b
-  ); /* Add a gradient background */
-  border: none; /* Remove default border */
-  border-radius: 8px; /* Round the corners */
-  cursor: pointer; /* Change cursor on hover */
-  transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for effects */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+.card__form input:focus {
+  outline: none;
+  transform: scale(1.05);
+  background-color: #000;
+  color: #ffffff;
 }
 
-.submitBtn:hover {
-  transform: translateY(-2px); /* Slight lift effect on hover */
-  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15); /* Increase shadow on hover */
+.card__button {
+  border: 3px solid #000;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  left: 20%;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s;
+  width: 50%;
+  height: 100%;
 }
 
-.submitBtn:active {
-  transform: translateY(1px); /* Press-down effect on click */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Revert shadow on active */
+.card__button::before {
+  content: "Sure?";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 105%;
+  background-color: #fc4442;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.card__button:hover::before {
+  transform: translateY(0);
+}
+
+.card__button:active {
+  transform: scale(0.95);
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(2px, 2px);
+  }
+  25% {
+    transform: translate(-2px, -2px);
+  }
+  50% {
+    transform: translate(-2px, 2px);
+  }
+  75% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(2px, 2px);
+  }
+}
+
+.glitch {
+  animation: glitch 0.3s infinite;
 }

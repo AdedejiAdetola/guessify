@@ -1,0 +1,218 @@
+.container {
+  font-family: "Orbitron", sans-serif;
+  /* background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); */
+  background-image: url("../Images/bgImg.jpg");
+  background-position: center;
+
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: "Handjet", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-variation-settings: "ELGR" 1, "ELSH" 2;
+}
+
+.title {
+  font-size: 3.5rem;
+  color: #e8b86d;
+  margin-bottom: 20px;
+  background-color: #203a43;
+  padding: 10px 30px;
+  border-radius: 70px;
+}
+
+/* .gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  max-width: 900px;
+  width: 100%;
+} */
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: 4fr 1fr; /* First column 80%, second column 20% */
+  grid-template-rows: repeat(
+    auto-fill,
+    minmax(100px, auto)
+  ); /* Adjust row height as needed */
+  grid-gap: 20px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.gridGameOver {
+  display: block;
+}
+
+.shrinkSection {
+  background-color: #112d42;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.wordSection {
+  background-color: #203a43;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  /* border: 2px solid red; */
+}
+
+.wordGameOver {
+  margin-bottom: 20px;
+  background: #f7eed3;
+  box-shadow: 15px 22px 36px -13px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 15px 22px 36px -13px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 15px 22px 36px -13px rgba(0, 0, 0, 0.75);
+
+  /* box-shadow: 1px 22px 36px -13px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 1px 22px 36px -13px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 1px 22px 36px -13px rgba(0, 0, 0, 0.75); */
+}
+
+.wordDisplay {
+  font-size: 2.5rem;
+  color: #00ffcc;
+  margin-bottom: 10px;
+}
+
+.winnerHighlight {
+  background-size: 400% 400%;
+  color: transparent;
+  font-weight: bold;
+  animation: gradientShift 4s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* text-fill-color: transparent; For Webkit-based browsers */
+
+  background: #e85c0d;
+  background: linear-gradient(to right, #e85c0d 0%, #6c48c5 50%, #e85c0d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  font-size: 60px;
+  /* background-color: #203a43; */
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.hintDisplay {
+  font-size: 1.2rem;
+  color: #e8b86d;
+}
+
+.scoreSection {
+  grid-column: 1 / 4;
+  background-color: #112d42;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.scoreDisplay {
+  font-size: 1.5rem;
+  color: #e8b86d;
+}
+
+.turnSection {
+  grid-column: 1 / 4;
+  background-color: #203a43;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  /* border: 2px solid red; */
+}
+
+.turnGameOver {
+  margin-top: 20px;
+  display: none;
+}
+
+.turnDisplay {
+  font-size: 1.5rem;
+  color: #00ffcc;
+}
+
+.resetSection {
+  grid-column: 1 / 4;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.label {
+  font-size: 1rem;
+  color: #00ffcc;
+  margin-bottom: 10px;
+}
+
+.inputSmall {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  background-color: #112d42;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.buttonSmall {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background-color: #00ffcc;
+  color: #112d42;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttonReset {
+  padding: 15px 30px;
+  border-radius: 8px;
+  border: none;
+  background-color: #ffcc00;
+  color: #112d42;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttonReset:hover {
+  background-color: #e85c0d;
+}
+
+.loader {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #ffcc00;
+}
+
+.gameOver {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  color: #ff3333;
+  background-color: #203a43;
+  padding: 10px 30px;
+  border-radius: 70px;
+}
