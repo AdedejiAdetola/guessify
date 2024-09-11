@@ -3,7 +3,6 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Arial", sans-serif;
-
   background-color: #3e333f;
   height: 100vh;
   display: flex;
@@ -112,13 +111,13 @@
   filter: blur(0px);
   opacity: 1;
   position: absolute;
-  right: 0;
+  right: -0px;
   /* top: 0; */
   background-color: #bcbbb0;
   background-image: url("./Images/guessify.jpg");
   /* background-size: contai; or 'cover' */
   background-repeat: no-repeat;
-  background-position: right;
+  background-position: center;
 }
 
 /* CSS */
@@ -169,7 +168,8 @@
 }
 
 .card {
-  width: 600px;
+  width: 80%;
+  max-width: 600px;
   padding: 20px;
   background: #fff;
   border: 6px solid #000;
@@ -210,7 +210,7 @@
 }
 
 .card__content {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.4;
   color: #000;
   margin-bottom: 20px;
@@ -299,4 +299,46 @@
 
 .glitch {
   animation: glitch 0.3s infinite;
+}
+
+@media only screen and (max-width: 1298px) {
+  .body,
+  .introLeft {
+    background-color: transparent;
+    background-image: url("./Images/guessify.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+  }
+  .navbar .logo {
+    color: black;
+  }
+
+  .blurBackground {
+    height: 0;
+  }
+  .introLeft {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .card__title {
+    font-size: 20px;
+  }
+  .introLeft p {
+    font-size: 14px;
+  }
+
+  .card__button {
+    font-size: 14px;
+  }
+
+  .navbar .logo {
+    color: black;
+  }
 }

@@ -152,24 +152,6 @@ const Page = () => {
           gameOver ? styles.gridGameOver : ""
         }`}
       >
-        {/* Enter Name Section */}
-        {/* <div className={styles.shrinkSection}>
-          <label className={styles.label}>Enter your name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className={styles.inputSmall}
-          />
-          <button
-            onClick={handleStartGame}
-            className={styles.buttonSmall}
-            disabled={loading}
-          >
-            Start Game
-          </button>
-        </div> */}
-
         {/* Word Display Section */}
 
         <div

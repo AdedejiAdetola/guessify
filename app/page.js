@@ -68,7 +68,7 @@ export default function Home() {
                 Submit
               </button>
             </form>
-            {loading && <div>Loading...</div>}
+            {loading && <div className="text-yellow-500">Loading...</div>}
           </div>
         </div>
       </div>
